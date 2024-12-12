@@ -5,19 +5,51 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import useNoteService from "./hook/useNoteService";
 
 function App() {
-  const {noteState, addNote, deleteNote, selectNote, cancelNote, handleAddNote, selectedNote, editNote} = useNoteService()
+  const {
+    noteState,
+    addNote,
+    deleteNote,
+    selectNote,
+    cancelNote,
+    handleAddNote,
+    selectedNote,
+    editNote,
+    getNotes,
+  } = useNoteService();
 
-  let content = <SelectedNoteDetails note={selectedNote} onDelete={deleteNote} onEdit={editNote} />
+  localStorage.clear();
+
+  let content = (
+    <SelectedNoteDetails
+      note={selectedNote}
+      onDelete={deleteNote}
+      onEdit={editNote}
+      onSelectNote={selectNote}
+      onCancel={cancelNote}
+    />
+  );
 
   if (noteState.selectedNoteId === null) {
-    content = <NewNote handleAddNote={handleAddNote} onCancelNote={cancelNote}/>
+    content = (
+      <NewNote
+        handleAddNote={handleAddNote}
+        onAddNote={addNote}
+        cancelNote={cancelNote}
+      />
+    );
   } else if (noteState.selectedNoteId === undefined) {
-    content = <NoteNotSelected onAddNote={addNote}/>
-  } 
+    content = <NoteNotSelected onAddNote={addNote} />;
+  }
 
   return (
-    <main className="h-screen my-8 flex gap-8">
-      <Sidebar onAddNote={addNote} notes={noteState.notes} onSelectNote={selectNote} />
+    <main className="h-screen py-8 flex gap-8">
+      <Sidebar
+        onAddNote={addNote}
+        notes={noteState.notes}
+        onSelectNote={selectNote}
+        selectedNote={selectedNote}
+        getNotes={getNotes}
+      />
       {content}
     </main>
   );

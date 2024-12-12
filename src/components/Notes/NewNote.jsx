@@ -1,40 +1,62 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Input from "../Common/Input";
+import Button from "../Common/Button";
+import NoteNotSelected from "./NoteNotSelected";
 
-const NewNote = ({ handleAddNote, onCancelNote }) => {
-  const titleRef = useRef()
+const NewNote = ({ handleAddNote, addNote, cancelNote }) => {
+  const titleRef = useRef();
+  const descriptionRef = useRef();
+  const [isEditing, setIsEditing] = useState(true);
 
-  const saveNote = () => {
-    const enteredTitle = titleRef.current.value
-
-    if ( enteredTitle.trim() === '') {
-      return alert('No data provided in note !')
-    }
+  const saveNote = (event) => {
+    event.preventDefault();
 
     handleAddNote({
-      title: enteredTitle,
-    })
-  }
+      title: titleRef.current.value,
+      description: descriptionRef.current.value,
+    });
+  };
 
   return (
-    <div className="w-[35rem] mt-16">
-      <menu className="flex items-center justify-end gap-4 my-4">
-        <li>
-          <button className="text-stone-800 hover:text-stone-950" onClick={onCancelNote}>
-            Cancel
-          </button>
-        </li>
-
-        <li>
-          <button className="bg-stone-800 text-stone-50 hover:bg-stone-950 px-6 py-2 rounded-md" onClick={saveNote}>
-            Save
-          </button>
-        </li>
-      </menu>
-      <div>
-        <Input ref={titleRef} label="Title" type="text" required/>
-      </div>
-    </div>
+    <>
+      {isEditing ? (
+        <div className="w-[35rem] mt-16">
+          <form onSubmit={(event) => saveNote(event)}>
+            <Input
+              ref={titleRef}
+              label="Title"
+              value={titleRef.current}
+              maxLength="20"
+              required
+            />
+            <Input
+              ref={descriptionRef}
+              label="Description"
+              value={titleRef.current}
+              textarea
+              required
+            />
+            <div className="flex gap-2">
+              <Button type="submit">Save Note</Button>
+              <Button
+                type="button"
+                onClick={() => {
+                  cancelNote(), setIsEditing(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </div>
+      ) : (
+        <NoteNotSelected
+          onAddNote={() => {
+            addNote(), setIsEditing(!isEditing);
+          }}
+        />
+      )}
+    </>
   );
 };
 
