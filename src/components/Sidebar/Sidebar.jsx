@@ -8,6 +8,7 @@ const Sidebar = ({
   selectedNote,
   getNotes,
 }) => {
+
   useEffect(() => {
     getNotes();
   }, [getNotes]);

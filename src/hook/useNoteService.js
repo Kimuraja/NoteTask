@@ -61,17 +61,21 @@ const useNoteService = () => {
   };
 
   const getNotes = useCallback(async () => {
-    const notes = Array.from({ length: localStorage.length }, (_, index) => {
-      const key = localStorage.key(index);
-      const note = JSON.parse(localStorage.getItem(key));
-      return note && note.title ? { id: key, ...note } : null;
-    }).filter(Boolean);
-
+    const notes = await new Promise((resolve) => {
+      const storedNotes = Array.from({ length: localStorage.length }, (_, index) => {
+        const key = localStorage.key(index);
+        const note = JSON.parse(localStorage.getItem(key));
+        return note && note.title ? { id: key, ...note } : null;
+      }).filter(Boolean);
+      resolve(storedNotes);
+    });
+    
     setNoteState((prevState) => ({
       ...prevState,
       notes,
     }));
   }, []);
+  
 
   const handleAddNote = (noteData) => {
     setNoteState((prevState) => {
@@ -79,7 +83,8 @@ const useNoteService = () => {
         ...noteData,
         id: id++,
       };
-
+      localStorage.setItem(newNote.id, JSON.stringify(newNote));
+      
       return {
         ...prevState,
         selectedNoteId: undefined,

@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../Common/Button";
 import Input from "../Common/Input";
+import Note from "../Common/Note";
 
 const NoteForm = ({
   note,
@@ -14,21 +15,27 @@ const NoteForm = ({
   title,
   description,
 }) => {
+
   const saveNote = async (event) => {
     event.preventDefault();
-
+  
     const noteData = { title: title, description: description };
-
-    await Promise.resolve();
-    localStorage.setItem(note.id, JSON.stringify(noteData));
-    onEdit({ ...note, ...noteData });
+  
+    const simulateApiResponse = () => 
+      new Promise((resolve) => setTimeout(() => resolve(noteData), 500));
+  
+    const response = await simulateApiResponse();
+    
+    localStorage.setItem(note.id, JSON.stringify(response));
+    onEdit({ ...note, ...response });
     setIsEditing(false);
   };
+  
 
   return (
     <section>
       {isEditing ? (
-        <form onSubmit={(event) => saveNote(event)}>
+        <Note save={saveNote} onClick={() => {onNoteEditCancel(), setIsEditing(false)}} >
           <Input
             onChange={(event) => onSetTitle(event.target.value)}
             label="Title"
@@ -43,27 +50,11 @@ const NoteForm = ({
             textarea
             required
           />
-          <div className="flex gap-2">
-            <Button type="submit">Save Note</Button>
-            <Button
-              type="button"
-              onClick={() => {
-                setIsEditing(false);
-                onNoteEditCancel();
-              }}
-            >
-              Cancel
-            </Button>
-          </div>
-        </form>
+        </Note>
       ) : (
         <>
           <p className="text-stone-800 mb-4 whitespace-pre-wrap">
-            {note ? (
-              note.description
-            ) : (
-              <>Type your notes by clicking "Edit Note"</>
-            )}
+            {note ? note.description : <>Type your notes by clicking "Edit Note"</> }
           </p>
           <Button onClick={() => setIsEditing(true)}>Edit Note</Button>
           <Button onClick={onNoteExit}>Cancel Note</Button>
