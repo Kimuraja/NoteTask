@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import Input from "../Common/Input";
 import NoteNotSelected from "./NoteNotSelected";
-import Note from "../Common/Note";
+import NoteForm from "../Common/NoteForm";
 
 
 const NewNote = ({ handleAddNote, addNote, cancelNote }) => {
@@ -22,7 +22,7 @@ const NewNote = ({ handleAddNote, addNote, cancelNote }) => {
     <>
       {isEditing ? (
         <div className="w-[35rem] mt-16">
-          <Note save={saveNote} onClick={() => {cancelNote(), setIsEditing(false)}}>
+          <NoteForm save={saveNote} onClick={() => {cancelNote(), setIsEditing(false)}}>
             <Input
               ref={titleRef}
               label="Title"
@@ -37,7 +37,7 @@ const NewNote = ({ handleAddNote, addNote, cancelNote }) => {
               textarea
               required
             />
-          </Note>
+          </NoteForm>
         </div>
       ) : (
         <NoteNotSelected

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NoteForm from "./NoteForm";
+import NoteEditor from "./NoteEditor";
 
 const SelectedNoteDetails = ({
   note,
@@ -46,7 +46,7 @@ const SelectedNoteDetails = ({
         </div>
       </header>
 
-      <NoteForm
+      <NoteEditor
         note={note}
         isEditing={isEditing}
         setIsEditing={setIsEditing}

@@ -1,9 +1,9 @@
 import React from "react";
 import Button from "../Common/Button";
 import Input from "../Common/Input";
-import Note from "../Common/Note";
+import NoteForm from "../Common/NoteForm";
 
-const NoteForm = ({
+const NoteEditor = ({
   note,
   onEdit,
   isEditing,
@@ -35,7 +35,7 @@ const NoteForm = ({
   return (
     <section>
       {isEditing ? (
-        <Note save={saveNote} onClick={() => {onNoteEditCancel(), setIsEditing(false)}} >
+        <NoteForm save={saveNote} onClick={() => {onNoteEditCancel(), setIsEditing(false)}} >
           <Input
             onChange={(event) => onSetTitle(event.target.value)}
             label="Title"
@@ -50,7 +50,7 @@ const NoteForm = ({
             textarea
             required
           />
-        </Note>
+        </NoteForm>
       ) : (
         <>
           <p className="text-stone-800 mb-4 whitespace-pre-wrap">
@@ -64,4 +64,4 @@ const NoteForm = ({
   );
 };
 
-export default NoteForm;
+export default NoteEditor;

@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "./Button";
 
-const Note = ({children, save, onClick}) => {
+const NoteForm = ({children, save, onClick}) => {
   
   return (
     <div className="w-[35rem] mt-16">
@@ -18,4 +18,4 @@ const Note = ({children, save, onClick}) => {
   );
 };
 
-export default Note;
+export default NoteForm;

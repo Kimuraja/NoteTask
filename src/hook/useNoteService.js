@@ -67,6 +67,7 @@ const useNoteService = () => {
         const note = JSON.parse(localStorage.getItem(key));
         return note && note.title ? { id: key, ...note } : null;
       }).filter(Boolean);
+      
       resolve(storedNotes);
     });
     
